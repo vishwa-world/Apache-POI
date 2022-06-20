@@ -3,6 +3,12 @@ package excelOperations;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,7 +24,7 @@ public class WriteOperations {
 	 * @param dataToWrite
 	 */
 	public void writeInToExcel(String filePath, String sheetName, Object[][] dataToWrite) {
-		System.out.println("*Adding new row to: " + sheetName);
+		System.out.println("*Adding new row to: " + sheetName + "*");
 
 		// Creating file object of existing excel file
 		File fileName = new File(filePath);
@@ -86,7 +92,7 @@ public class WriteOperations {
 	public void updateCellValue(String filePath, String sheetName, String data, int rowIndex,
 			int colIndex) {
 		System.out.println("*Updating data in cell of row no. " + rowIndex + " col no. " + colIndex
-				+ " of: " + sheetName);
+				+ " of: " + sheetName + "*");
 
 		// Creating file object of existing excel file
 		File fileName = new File(filePath);
@@ -125,6 +131,57 @@ public class WriteOperations {
 		}
 	}
 
+	public void addColumn(String filePath, String sheetName, String[] colValues) {
+		System.out.println("*Adding new column to sheet: " + sheetName + "*");
+
+		// Creating file object of existing excel file
+		File fileName = new File(filePath);
+
+		try {
+
+			FileInputStream file = new FileInputStream(fileName);
+
+			// Create Workbook instance holding reference to .xlsx file
+			XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+			// Get first/desired sheet from the workbook
+			XSSFSheet sheet = workbook.getSheet(sheetName);
+
+			// Get all the rows
+			Iterator<Row> iterator = sheet.iterator();
+
+			// Iterate over column values which you want to add
+			for (String colValue : colValues) {
+				while (iterator.hasNext()) {
+					Row currentRow = iterator.next();
+					// Create a new Cell in row
+					Cell cell = currentRow.createCell(currentRow.getLastCellNum(), CellType.STRING);
+					// Set Cell value
+					cell.setCellValue((String) colValue);
+					break;
+				}
+			}
+
+			// Close input stream
+			file.close();
+
+			// Crating output stream and writing the updated workbook
+			FileOutputStream os = new FileOutputStream(fileName);
+			workbook.write(os);
+
+			// Close the workbook and output stream
+			workbook.close();
+			os.close();
+
+			System.out.println("Excel file has been updated successfully.");
+
+		} catch (Exception e) {
+			System.err.println("Exception while updating an existing excel file.");
+			e.printStackTrace();
+		}
+
+	}
+
 	public void run() {
 
 		String filePath = System.getProperty("user.dir") + "/src/main/resources/Activity.xlsx";
@@ -141,7 +198,9 @@ public class WriteOperations {
 		this.updateCellValue(filePath, worksheetName, "27-02-2021", 1, 3);
 
 		// Create a new column “Area(Km)” with given data
-
+		String[] colValues =
+				{"Area (Km2)", "3287000", "54394", "30688", "302068", "17100000", "42933"};
+		this.addColumn(filePath, worksheetName, colValues);
 	}
 
 }

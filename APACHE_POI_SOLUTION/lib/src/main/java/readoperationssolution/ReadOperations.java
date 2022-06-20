@@ -112,7 +112,7 @@ public class ReadOperations {
 	 * @param columnIndex
 	 * @throws IOException
 	 */
-	public void getColunmValue(String filePath, String sheetName, int columnIndex)
+	public void getColumnValue(String filePath, String sheetName, int columnIndex)
 			throws IOException {
 		System.out
 				.println("*Printing data in col no. " + columnIndex + " of: " + sheetName + "*\n");
@@ -198,7 +198,7 @@ public class ReadOperations {
 			this.getRowValue(filePath, worksheetName, 1);
 
 			// Print values in the “Capital” column
-			this.getColunmValue(filePath, worksheetName, 1);
+			this.getColumnValue(filePath, worksheetName, 1);
 
 			// Print capital of “Belgium”
 			this.getCellValue(filePath, worksheetName, 3, 1);
