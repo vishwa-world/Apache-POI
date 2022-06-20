@@ -209,6 +209,54 @@ public class FormattingOperations {
 		}
 	}
 
+	public void validateFormattingUpdates(String filePath, String sheetName) {
+		// Creating file object of existing excel file
+		File fileName = new File(filePath);
+
+		try {
+
+			FileInputStream file = new FileInputStream(fileName);
+
+			// Create Workbook instance holding reference to .xlsx file
+			XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+			// Get first/desired sheet from the workbook
+			XSSFSheet sheet = workbook.getSheet(sheetName);
+
+			/* Verify setting color to cell B2 */
+			XSSFCell cell2Style = sheet.getRow(1).getCell(1);
+
+			XSSFCellStyle style = cell2Style.getCellStyle();
+
+			System.out.println(
+					"Color of cell B2 is: " + style.getFillBackgroundColorColor().getARGBHex());
+
+			/* Verify setting alignment of "Survey" column to right alignment */
+			cell2Style = sheet.getRow(0).getCell(3);
+			style = cell2Style.getCellStyle();
+
+			System.out.println(
+					"Alignment of cell A4 (Survey) is: " + style.getAlignment().toString());
+
+			// Close input stream
+			file.close();
+
+			// Crating output stream and writing the updated workbook
+			FileOutputStream os = new FileOutputStream(fileName);
+			workbook.write(os);
+
+			// Close the workbook and output stream
+			workbook.close();
+			os.close();
+
+			System.out.println("Excel file has been updated successfully.");
+
+		} catch (Exception e) {
+			System.err.println("Exception while updating an existing excel file.");
+			e.printStackTrace();
+		}
+	}
+
 	public void run() {
 		String filePath = System.getProperty("user.dir") + "/src/main/resources/Activity.xlsx";
 		String worksheetName = "Country Population";
@@ -225,6 +273,11 @@ public class FormattingOperations {
 
 		// Add font “Verdana” while entering the new row to your worksheet
 		this.applyFontToRow(filePath, worksheetName, countryRecord, "Verdana");
+
+		/* Add your logic to make the formatting updates above this line */
+
+		// Utility method to verify formatting updates
+		this.validateFormattingUpdates(filePath, worksheetName);
 	}
 
 }
