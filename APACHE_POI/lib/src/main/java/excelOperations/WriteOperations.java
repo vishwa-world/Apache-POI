@@ -64,6 +64,25 @@ public class WriteOperations {
 		/* Step - 9 : Close the workbook and output stream */
 	}
 
+	public void addColumn(String filePath, String sheetName, String[] colValues) {
+		/* Step - 1 : Creating file object of existing excel file */
+
+		/* Step - 2 : Creating input stream */
+
+		/* Step - 3 : Creating workbook from input stream */
+
+		/* Step - 4 : Reading first sheet of excel file */
+
+		/* Step - 5 : Get all the rows and add a new cell to it at the end */
+
+		/* Step - 6 : Close input stream */
+
+		/* Step - 7 : Creating output stream and writing the updated workbook */
+
+		/* Step - 8 : Close the workbook and output stream */
+
+	}
+
 	public void run() {
 		// Call the desired methods
 	}
